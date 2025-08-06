@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft Bot Command Guide</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: Consolas, monospace;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #58a6ff;
+    }
+    pre {
+      background-color: #161b22;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    code {
+      color: #d2a8ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Minecraft Bot Command Guide</h1>
+
+  <h2>1. Update and Upgrade:</h2>
+  <pre><code>pkg update && pkg upgrade</code></pre>
+
+  <h2>2. Install Node.js:</h2>
+  <pre><code>pkg install nodejs-lts</code></pre>
+
+  <h2>3. Check Node.js and npm Version:</h2>
+  <pre><code>node -v
+npm -v</code></pre>
+
+  <h2>4. Install Mineflayer:</h2>
+  <pre><code>npm install mineflayer</code></pre>
+
+  <h2>5. Create and Navigate to Minecraft Bot Folder:</h2>
+  <pre><code>mkdir minecraft-bot
+cd minecraft-bot</code></pre>
+
+  <h2>6. Create bot.js:</h2>
+  <pre><code>nano bot.js</code></pre>
+
+  <h2>7. Paste this Code in bot.js:</h2>
+  <pre><code>const mineflayer = require('mineflayer');
+
+const botUsername = 'bot';
+const botPassword = 'pitaji';
+
+function createBot() {
+  const bot = mineflayer.createBot({
+    host: 'angrymc.aternos.me',
+    port: 13331,
+    username: botUsername,
+    password: botPassword,
+    keepAlive: true,
+    version: '1.20.4'
+  });
+
+  bot.on('spawn', () => {
+    bot.look(0, 0, true);
+    bot.chat(`/register ${botPassword} ${botPassword}`);
+    setTimeout(() => {
+      bot.chat(`/login ${botPassword}`);
+    }, 3000);
+
+    setInterval(() => {
+      bot.setControlState('jump', true);
+      setTimeout(() => {
+        bot.setControlState('jump', false);
+      }, Math.floor(Math.random() * 700) + 300);
+    }, Math.floor(Math.random() * 5000) + 5000);
+  });
+
+  bot.on('end', () => setTimeout(createBot, 5000));
+  bot.on('error', () => setTimeout(createBot, 5000));
+  bot.on('kicked', () => setTimeout(createBot, 5000));
+}
+
+createBot();</code></pre>
+
+  <h2>8. Install pm2:</h2>
+  <pre><code>npm install -g pm2</code></pre>
+
+  <h2>9. Start the Bot:</h2>
+  <pre><code>pm2 start bot.js --name "MinecraftBot"</code></pre>
+
+  <h2>10. Save pm2 Configuration:</h2>
+  <pre><code>pm2 save</code></pre>
+</body>
+</html>
